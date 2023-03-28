@@ -1,17 +1,20 @@
-"""_根据相机位姿求指定点的世界坐标_"""
+"""_根据相机位姿求指定点的世界坐标_
 
-import cv2
-import numpy as np
-import time
-from PIL import Image, ImageTk
-import threading
+Returns:
+    _Description_: _根据两幅图像,在已知P1,P2,P3,P4四点世界坐标系的情况下,计算出其它点的世界坐标_
+"""
 import os
 import re
-import subprocess
-import random
-import math
+import cv2
 import csv
+import math
+import time
+import random
 import argparse
+import threading
+import subprocess
+import numpy as np
+from PIL import Image, ImageTk
 
 
 class PNPSolver():
@@ -134,9 +137,9 @@ class PNPSolver():
             rows = [row for row in spamreader]
             self.cameraMatrix = np.zeros((3, 3))
             #Dt = np.zeros((4, 1))
-            # 传感器规格为23.6mm*15.6mm
-            size_w = 23.6
-            size_h = 15.6
+            # 传感器规格为7.38mm*5.54mm
+            size_w = 7.38
+            size_h = 5.54
             imageWidth = int(rows[0][1])
             imageHeight = int(rows[0][2])
             self.cameraMatrix[0][0] = rows[1][1]
@@ -163,9 +166,9 @@ class PNPSolver():
                 self.distCoefs[0][2] = rows[2][3]
                 self.distCoefs[0][3] = rows[2][4]
                 self.distCoefs[0][4] = rows[2][5]
-            print('dim = %d*%d' % (imageWidth, imageHeight))
-            print('Kt = \n', self.cameraMatrix)
-            print('Dt = \n', self.distCoefs)
+            print('dim = %d*%d' % (imageWidth, imageHeight))   #影像尺寸(像素)
+            print('Kt = \n', self.cameraMatrix)  # 相机矩阵
+            print('Dt = \n', self.distCoefs)    # 畸变参数
             self.f = [self.cameraMatrix[0][0] *
                       (size_w/imageWidth), self.cameraMatrix[1][1]*(size_h/imageHeight)]
             print('f = \n', self.f)
@@ -242,9 +245,6 @@ class GetDistanceOf2linesIn3D():
 
 
 if __name__ == "__main__":
-    print("***************************************")
-    print("test example")
-    print("***************************************")
     parser = argparse.ArgumentParser(description='test')
     parser.add_argument('-file', type=str, default='calibration.csv')
     args = parser.parse_args()
@@ -252,7 +252,6 @@ if __name__ == "__main__":
 
     p4psolver1 = PNPSolver()
     # 输入拍到的图片的点，包括待求点的像素坐标
-
     P11 = np.array([0, 0, 0])
     P12 = np.array([0, 200, 0])
     P13 = np.array([150, 0, 0])

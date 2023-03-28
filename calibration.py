@@ -94,10 +94,10 @@ ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(
 newcameramtx, roi = cv2.getOptimalNewCameraMatrix(
     mtx, dist, (re_w, re_h), 0, (re_w, re_h))
 print("ret(重投影误差):", ret,
-        "mtx(内参矩阵):\n", mtx,
-        "dist(畸变参数):\n", dist,  # 5个畸变参数,(k_1,k_2,p_1,p_2,k_3)
-        "rvecs(旋转向量):\n", rvecs,
-        "tvecs(平移向量):\n", tvecs
+        "\n\nmtx(内参矩阵):\n", mtx,
+        "\n\ndist(畸变参数):\n", dist,  # 5个畸变参数,(k_1,k_2,p_1,p_2,k_3)
+        "\n\nrvecs(旋转向量):\n", rvecs,
+        "\n\ntvecs(平移向量):\n", tvecs
         )
 
 # 保存相机参数(内参矩阵、畸变参数、旋转向量、平移向量)
@@ -110,7 +110,7 @@ np.savez('./calibration/result/Camera parameters.npz', mtx=mtx, dist=dist,
 image2 = cv2.imread(file_mid + '/IMG_2578.jpg')
 dst = cv2.undistort(image2, mtx, dist, None, newcameramtx)
 cv2.imwrite(file_out + '/calibresult.jpg', dst)
-print("newcameramtx(优化后相机内参):\n", newcameramtx)
+print("\n\nnewcameramtx(优化后相机内参):\n", newcameramtx)
 
 # 反投影误差total_error,越接近0,说明结果越理想。
 total_error = 0
@@ -120,4 +120,4 @@ for i in range(len(objpoints)):
     error = cv2.norm(imgpoints[i], imgpoints2, cv2.NORM_L2) / \
         len(imgpoints2)   # 反投影得到的点与图像上检测到的点的误差
     total_error += error
-print(("total error: "), total_error / len(objpoints))   # 记平均
+print(("\n\ntotal error:"), total_error / len(objpoints))   # 记平均
