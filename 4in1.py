@@ -153,7 +153,8 @@ while True:
     # 按下‘q’键，中断循环
     if key == ord("q"):
         break
-    
+
+
 #释放资源
 cap.release()
 cv2.destroyAllWindows()
