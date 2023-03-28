@@ -15,7 +15,7 @@ import threading
 import subprocess
 import numpy as np
 from PIL import Image, ImageTk
-
+PI=math.pi
 
 class PNPSolver():
     def __init__(self):
@@ -50,9 +50,9 @@ class PNPSolver():
             y = math.atan2(-R[2, 0], sy)
             z = 0
         if anglestype == 0:
-            x = x*180.0/3.141592653589793
-            y = y*180.0/3.141592653589793
-            z = z*180.0/3.141592653589793
+            x = x*180.0/PI
+            y = y*180.0/PI
+            z = z*180.0/PI
         elif anglestype == 1:
             x = x
             y = y
@@ -64,7 +64,7 @@ class PNPSolver():
     def CodeRotateByZ(self, x,  y,  thetaz):
         x1 = x  # 将变量拷贝一次，保证&x == &outx这种情况下也能计算正确
         y1 = y
-        rz = thetaz*3.141592653589793/180
+        rz = thetaz*PI/180
         outx = math.cos(rz)*x1 - math.sin(rz)*y1
         outy = math.sin(rz)*x1 + math.cos(rz)*y1
         return outx, outy
@@ -73,7 +73,7 @@ class PNPSolver():
     def CodeRotateByY(self, x, z, thetay):
         x1 = x
         z1 = z
-        ry = thetay * 3.141592653589793 / 180
+        ry = thetay * PI / 180
         outx = math.cos(ry) * x1 + math.sin(ry) * z1
         outz = math.cos(ry) * z1 - math.sin(ry) * x1
         return outx, outz
@@ -82,7 +82,7 @@ class PNPSolver():
     def CodeRotateByX(self, y, z, thetax):
         y1 = y
         z1 = z
-        rx = (thetax * 3.141592653589793) / 180
+        rx = (thetax * PI) / 180
         outy = math.cos(rx) * y1 - math.sin(rx) * z1
         outz = math.cos(rx) * z1 + math.sin(rx) * y1
         return outy, outz
@@ -155,7 +155,7 @@ class PNPSolver():
                 self.distCoefs[1][0] = rows[2][2]
                 self.distCoefs[2][0] = rows[2][3]
                 self.distCoefs[3][0] = rows[2][4]
-                # The values of K is to scale with image dimension.
+                # K 的值是随图像尺寸缩放
                 scaled_K = self.cameraMatrix * 0.8
                 scaled_K[2][2] = 1.0
             else:
@@ -166,6 +166,7 @@ class PNPSolver():
                 self.distCoefs[0][2] = rows[2][3]
                 self.distCoefs[0][3] = rows[2][4]
                 self.distCoefs[0][4] = rows[2][5]
+                
             print('dim = %d*%d' % (imageWidth, imageHeight))   #影像尺寸(像素)
             print('Kt = \n', self.cameraMatrix)  # 相机矩阵
             print('Dt = \n', self.distCoefs)    # 畸变参数
