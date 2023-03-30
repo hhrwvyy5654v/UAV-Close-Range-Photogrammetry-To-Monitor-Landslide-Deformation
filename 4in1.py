@@ -8,8 +8,8 @@ from scipy import spatial
 import cv2.aruco as aruco
 
 
-file = '../data/test/IMG_2285.jpg'
-npz = '../calibration/result/C.npz'
+file = './data/IMG_2575.jpg'
+npz = './calibration/result/Camera parameters.npz'
 targetMarker = [0,1]
 groupnum = 4
 
