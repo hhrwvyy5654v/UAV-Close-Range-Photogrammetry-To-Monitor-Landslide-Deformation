@@ -262,17 +262,6 @@ if __name__ == "__main__":
     p13 = np.array([2997, 2797])
     p14 = np.array([5544, 2757])
 
-    '''
-    P11 = np.array([0, 0, 0])
-    P12 = np.array([0, 300, 0])
-    P13 = np.array([210, 0, 0])
-    P14 = np.array([210, 300, 0])    
-    p11 = np.array([1765, 725])
-    p12 = np.array([3068, 1254])
-    p13 = np.array([1249, 1430])
-    p14 = np.array([2648, 2072]) 
-    '''
-
     p4psolver1.Points3D[0] = np.array([P11, P12, P13, P14])
     p4psolver1.Points2D[0] = np.array([p11, p12, p13, p14])
     #p4psolver1.point2find = np.array([4149, 671])
@@ -282,16 +271,6 @@ if __name__ == "__main__":
     p4psolver1.solver()
 
     p4psolver2 = PNPSolver()
-    '''
-    P21 = np.array([0, 0, 0])
-    P22 = np.array([0, 200, 0])
-    P23 = np.array([150, 0, 0])
-    P24 = np.array([150, 200, 0])
-    p21 = np.array([3062, 3073])
-    p22 = np.array([3809, 3089])
-    p23 = np.array([3035, 3208])
-    p24 = np.array([3838, 3217])
-    '''
     P21 = np.array([0, 0, 0])
     P22 = np.array([0, 300, 0])
     P23 = np.array([210, 0, 0])
