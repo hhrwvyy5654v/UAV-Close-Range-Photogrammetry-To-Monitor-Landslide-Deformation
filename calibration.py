@@ -65,7 +65,7 @@ for fname in images:
         imgpoints.append(corners)  # 角点坐标即图像坐标
         # 角点显示
         cv2.drawChessboardCorners(image, (w, h), corners, ret)
-        # cv2.imshow('findCorners', image)
+        cv2.imshow('findCorners', image)
         cv2.imwrite(file_out + '/print_corners' + str(i) + '.jpg', image)
         cv2.waitKey(10)
 cv2.destroyAllWindows()
