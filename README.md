@@ -24,6 +24,14 @@
 [根据两幅图像的位姿估计结果求某点的世界坐标](https://www.cnblogs.com/singlex/p/pose_estimation_3.html)<br>
 [子坐标系C在父坐标系W中的旋转问题](https://www.cnblogs.com/singlex/p/6037020.html)<br>
 [机器视觉——相机标定（四个坐标系的关系）](https://blog.csdn.net/zxf1314ll/article/details/115654320)<br>
+[python下使用aruco标记进进行三维姿势估计](https://blog.csdn.net/dgut_guangdian/article/details/107814300)<br>
+[]()<br>
+[]()<br>
+[]()<br>
+[]()<br>
+[]()<br>
+[]()<br>
+[]()<br>
 
 
 ## 相关实现
@@ -31,3 +39,7 @@
 [使用无人机监测建筑物的动态变形](https://www.hindawi.com/journals/mpe/2021/2657689/)<br>
 [无人机变形监测解决方案（珈鹰原创）](https://www.sohu.com/a/475839582_121153551)<br>
 [山体滑坡、泥石流背后的保命符！我国首个AI滑坡预警系统揭秘](https://zhuanlan.zhihu.com/p/354151382)<br>
+[]()<br>
+[]()<br>
+[]()<br>
+[]()<br>

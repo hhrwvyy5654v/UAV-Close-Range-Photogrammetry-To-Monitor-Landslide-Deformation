@@ -40,7 +40,7 @@ retval2, rvec2, tvec2 = aruco.estimatePoseSingleMarkers(
     corners2, marker_size, K, dist)
 
 P1, P2, P3, P4 = np.array(
-    [[-0.5, -0.5, 0], [-0.5, 0.5, 0], [0.5, 0.5, 0], [0.5, -0.5, 0]]) * marker_size
+    [[-5, -5, 0], [-5, 5, 0], [5, 5, 0], [5, 5, 0]]) * marker_size
 world_corners1 = np.array([P1, P2, P3, P4])
 world_corners2 = np.array([np.squeeze(cv2.projectPoints(np.array([[[0, 0, 0]]]), rvec1, tvec1, K, dist)[0]),
                            np.squeeze(cv2.projectPoints(np.array([[[marker_size, 0, 0]]]), rvec1, tvec1, K, dist)[0]),
@@ -59,7 +59,7 @@ retval, rvec, tvec = cv2.solvePnP(world_points, image_points, K, dist)
 
 # 将其它点的图像坐标转换为numpy数组
 other_points_image = np.array(
-    [[100, 100], [200, 100], [200, 200], [100, 200]], dtype="double")
+    [[5, 10], [-5, 10]], dtype="double")
 
 # 使用projectPoints函数将其它点的图像坐标转换为世界坐标系中的坐标
 other_points_world = cv2.projectPoints(
