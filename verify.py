@@ -66,7 +66,7 @@ other_points_world = cv2.projectPoints(
     other_points_image, rvec, tvec, K, dist)[0]
 
 # 输出其它点的世界坐标
-print("Other points world coordinates:")
+print("其它点的世界坐标:")
 for i, point in enumerate(other_points_world):
     print("Point {}: ({}, {}, {})".format(
         i+1, point[0][0], point[0][1], point[0][2]))
