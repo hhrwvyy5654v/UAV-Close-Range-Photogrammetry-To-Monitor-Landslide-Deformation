@@ -27,7 +27,7 @@
 [python下使用aruco标记进进行三维姿势估计](https://blog.csdn.net/dgut_guangdian/article/details/107814300)<br>
 [OpenCV基础（19）使用 OpenCV 和 Python 检测 ArUco 标记](https://blog.csdn.net/weixin_43229348/article/details/120565635)<br>
 [python+opencv2相机位姿估计](https://www.cnblogs.com/subic/p/8296794.html)<br>
-[]()<br>
+[相机位姿估计1：根据四个特征点估计相机姿态](https://www.cnblogs.com/singlex/p/pose_estimation_1.html)<br>
 []()<br>
 []()<br>
 []()<br>

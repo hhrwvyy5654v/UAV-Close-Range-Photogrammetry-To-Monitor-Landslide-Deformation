@@ -38,13 +38,6 @@ corners1, ids1, _ = aruco.detectMarkers(image=img1, dictionary=aruco_dict)
 corners2, ids2, _ = aruco.detectMarkers(image=img2, dictionary=aruco_dict)
 
 
-
-
-
-print("corners1:",corners1,"\n"
-      "ids1:",ids1)
-
-
 retval1, rvec1, tvec1 = aruco.estimatePoseSingleMarkers(
     corners1, marker_size, K, dist)
 

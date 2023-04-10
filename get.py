@@ -1,20 +1,33 @@
 import cv2
-import cv2.aruco as aruco
+import numpy as np
 
-# 加载图像
-image = cv2.imread("./aruco_images/微信图片_20230410165039.jpg")
+# 加载用于生成标记的字典
+dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
 
-# 定义字典和参数
-aruco_dict = aruco.Dictionary_get(aruco.DICT_6X6_250)
-parameters = aruco.DetectorParameters_create()
+# 使用默认值初始化检测器参数
+parameters = cv2.aruco.DetectorParameters_create()
+
+# 加载包含 ArUco 标记的图像
+image = cv2.imread('./aruco_images/IMG_2575.jpg')
 
 # 检测图像中的标记
-corners, ids, rejectedImgPoints = aruco.detectMarkers(image, aruco_dict, parameters=parameters)
+corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(image, dictionary, parameters=parameters)
 
-# 打印检测到的标记的角和 ID
-if len(corners) > 0:
-    print("检测到的标记:")
-    for i in range(len(corners)):
-        print(f"标记{ids[i]}的角点为:\n {corners[i]}")
-else:
-    print("未检测到标记物")
+# 在图像上绘制检测到的标记
+image = cv2.aruco.drawDetectedMarkers(image, corners)
+
+
+
+
+# 计算每个标记的中心点
+for i in range(len(corners)):
+    # 获取当前标记的角
+    markerCorners = corners[i][0]
+
+    # 计算当前标记的中心点
+    center = np.mean(markerCorners, axis=0)
+
+    # 打印当前标记的中心点
+    print("Marker", ids[i], "center:", center)
+    print(center[0],center[1])
+    

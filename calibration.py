@@ -39,7 +39,7 @@ ResizeImage(file_in, file_mid, re_w, re_h)
 
 # 找棋盘格角点
 # 世界坐标系中的棋盘格点,在张正友标定法中认为Z = 0
-# mgrid创建了大小为8×5×2的三维矩阵,在reshape成二维以后赋给objp,objp最后为(0,0,0), (1,0,0), (2,0,0) ....,(8,5,0)
+# mgrid创建了大小为11×8×2的三维矩阵,在reshape成二维以后赋给objp,objp最后为(0,0,0), (1,0,0), (2,0,0) ....,(8,5,0)
 objp = np.zeros((w * h, 3), np.float32)   # 大小为wh×3的0矩阵
 objp[:, :2] = np.mgrid[0:w, 0:h].T.reshape(-1, 2)   # 将世界坐标系建在标定板上，所有点的Z坐标全部为0，所以只需要赋值x和y
 objpoints = []  # 储存在世界坐标系中的三维点
