@@ -29,8 +29,8 @@ rvecs2, tvecs2, _ = cv2.aruco.estimatePoseSingleMarkers(
     corners2, 0.05, camera_matrix, dist_coeffs)
 
 # 将像素坐标转换为相机坐标系下的坐标
-object_points = np.array([[0, 0, 0], [0.05, 0, 0], [0.05, 0.05, 0], [
-                         0, 0.05, 0]], dtype=np.float32)
+object_points = np.array([[-0.05, -0.05, 0], [-0.05, 0.05, 0],
+                         [0.05, -0.05, 0], [0.05, 0.05, 0]], dtype=np.float32)
 image_points1 = np.squeeze(corners1)
 image_points2 = np.squeeze(corners2)
 
