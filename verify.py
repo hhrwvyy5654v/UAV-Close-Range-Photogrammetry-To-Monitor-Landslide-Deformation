@@ -2,7 +2,9 @@
 1.通过相机拍摄到的图像,使用OpenCV中的aruco库检测和识别四个ArUco标记,并获取它们的像素坐标和ID。
 2.根据相机内部参数和畸变参数,将像素坐标转换为相机坐标系下的坐标。
 3.根据相机的外部参数(即相机的旋转矩阵和平移向量),将相机坐标系下的坐标转换为世界坐标系下的坐标。
-4.利用四个ArUco标记的世界坐标,计算出第五个点的世界坐标。具体方法可以是通过计算四个标记的中心点或者计算四个标记的交点来获取第五个点的世界坐标。
+4.利用四个ArUco标记的世界坐标,计算出第五个点的世界坐标。
+
+具体方法可以是通过计算四个标记的中心点或者计算四个标记的交点来获取第五个点的世界坐标。
 
 需要注意的是,计算世界坐标时需要使用相机的外部参数,因此您需要先进行相机标定,获取相机的内部参数和外部参数。
 同时,识别ArUco标记时需要保证标记的大小、数量和布局是已知的,并且标记之间的距离和相机与标记的相对位置也是已知的。
@@ -50,16 +52,16 @@ world_corners2 = np.array([np.squeeze(cv2.projectPoints(np.array([[[0, 0, 0]]]),
 # 使用PnP算法和三角测量方法计算其它点的世界坐标
 # 首先,将四个点的图像坐标和世界坐标系中的坐标转换为numpy数组
 image_points = np.array([corners1[0][0], corners1[0][1],
-                        corners1[0][2], corners1[0][3]], dtype="double")
+                        corners1[0][2], corners1[0][3]], dtype="float")
 world_points = np.array([world_corners1[0], world_corners1[1],
-                        world_corners1[2], world_corners1[3]], dtype="double")
+                        world_corners1[2], world_corners1[3]], dtype="float")
 
 # 使用solvePnP函数计算第一幅图像的相机位姿
 retval, rvec, tvec = cv2.solvePnP(world_points, image_points, K, dist)
 
 # 将其它点的图像坐标转换为numpy数组
 other_points_image = np.array(
-    [[5, 10], [-5, 10]], dtype="double")
+    [[5, 10], [-5, 10]], dtype="float")
 
 # 使用projectPoints函数将其它点的图像坐标转换为世界坐标系中的坐标
 other_points_world = cv2.projectPoints(
