@@ -1,3 +1,5 @@
+"""_获取aruco码的像素坐标_
+"""
 import cv2
 import numpy as np
 
@@ -8,7 +10,7 @@ dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
 parameters = cv2.aruco.DetectorParameters_create()
 
 # 加载包含 ArUco 标记的图像
-image = cv2.imread('./aruco_images/IMG_2575.jpg')
+image = cv2.imread('./aruco_images/微信图片_20230411175910.jpg')
 
 # 检测图像中的标记
 corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(image, dictionary, parameters=parameters)
@@ -23,11 +25,7 @@ image = cv2.aruco.drawDetectedMarkers(image, corners)
 for i in range(len(corners)):
     # 获取当前标记的角
     markerCorners = corners[i][0]
-
     # 计算当前标记的中心点
     center = np.mean(markerCorners, axis=0)
-
     # 打印当前标记的中心点
-    print("Marker", ids[i], "center:", center)
-    print(center[0],center[1])
-    
+    print("id",ids[i],":",center[0],",",center[1])
