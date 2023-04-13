@@ -34,9 +34,9 @@ def ResizeImage(filein, fileout, width, height):
 
 
 # 更改图片尺寸
-resize_width = 578
-resize_height = 438
-ResizeImage(file_in, file_mid, resize_width, resize_height)
+resize_width = 1704
+resize_height = 1280
+# ResizeImage(file_in, file_mid, resize_width, resize_height)
 
 
 # 寻找棋盘格角点
@@ -75,12 +75,9 @@ for fname in images:
         # 角点显示
         cv2.drawChessboardCorners(image, (width, height), corners, ret)
         cv2.imshow('角点显示', image)
-        cv2.imwrite(file_out + '/corners_' + str(index) + '.jpg', image)
+        cv2.imwrite(file_out + '/Corners_' + str(index) + '.jpg', image)
         cv2.waitKey(10)
-    else:
-        print("错误!")
-        index+=1
-        
+
 cv2.destroyAllWindows()
 
 
@@ -116,5 +113,5 @@ print("ret(重投影误差):", ret,
         )
 
 # 保存相机参数(内参矩阵、畸变参数、旋转向量、平移向量)
-np.savez('./camera_parameters/K30.npz', mtx=mtx, dist=dist,
+np.savez('./camera_parameters/IMX686.npz', mtx=mtx, dist=dist,
          rvecs=rvecs, tvecs=tvecs)  # 分别使用mtx,dist,rvecs,tvecs命名数组
