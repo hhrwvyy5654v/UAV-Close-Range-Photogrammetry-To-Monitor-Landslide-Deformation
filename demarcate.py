@@ -103,7 +103,6 @@ print("ret(重投影误差):", ret,
 np.savez('./Parameter/豪威OV48B.npz', mtx=mtx, dist=dist,
          rvecs=rvecs, tvecs=tvecs)  # 分别使用mtx,dist,rvecs,tvecs命名数组
 
-
 # cv2.Rodrigues()函数用于将旋转向量转换为旋转矩阵
 R, jacobian = cv2.Rodrigues(rvecs[0])
 print("\n旋转矩阵:\n",R)
