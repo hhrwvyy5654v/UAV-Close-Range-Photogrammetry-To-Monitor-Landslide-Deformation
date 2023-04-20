@@ -1,8 +1,16 @@
+<!--
+ * @Descripttion: 
+ * @Author: yang fu ren
+ * @version: 
+ * @Date: 2023-03-27 09:53:13
+ * @LastEditors: yang fu ren
+ * @LastEditTime: 2023-04-20 18:03:24
+-->
 # **<center>无人机近景摄影测量监测滑坡形变</center>**
 
-![](assets/无人机近景摄影测量监测滑坡形变.png)<br>
+![](Assets/无人机近景摄影测量监测滑坡形变.png)<br>
 
-![](assets/视频位移监测使用示意.jpg)<br>
+![](Assets/视频位移监测使用示意.jpg)<br>
 
 
 ## 参考文章
@@ -28,12 +36,11 @@
 [OpenCV基础（19）使用 OpenCV 和 Python 检测 ArUco 标记](https://blog.csdn.net/weixin_43229348/article/details/120565635)<br>
 [python+opencv2相机位姿估计](https://www.cnblogs.com/subic/p/8296794.html)<br>
 [相机位姿估计1：根据四个特征点估计相机姿态](https://www.cnblogs.com/singlex/p/pose_estimation_1.html)<br>
-[]()<br>
-[]()<br>
-[]()<br>
-[]()<br>
-[]()<br>
-[]()<br>
+[使用相机校准和 PnP 将像素坐标系 2D 坐标点 （u， v） 转换为世界坐标系 3D 坐标点 （X、Y、Z）](https://github.com/cong/2Dto3D)<br>
+[2021-03-08 Python OpenCV calibrateCamera()函数](https://www.jianshu.com/p/d9c4fb366fe2)<br>
+[相机内部参数矩阵获取(python+opencv)](https://zhuanlan.zhihu.com/p/420927518)<br>
+[相机参数标定（camera calibration）及标定结果如何使用](https://blog.csdn.net/Aoulun/article/details/78768570)<br>
+[一文带你搞懂相机内参外参(Intrinsics & Extrinsics)](https://zhuanlan.zhihu.com/p/389653208)<br>
 []()<br>
 []()<br>
 []()<br>

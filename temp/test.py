@@ -1,76 +1,178 @@
+import sys
+import os
+
+sys.path.append(os.getcwd())
+
 import cv2
 import numpy as np
-import math
+from modules.utils_3d import vis_3d as vis
+from utils import image_processing
 
-object_3d_points = np.array(([0, 0, 0],
-                            [0, 200, 0],
-                            [150, 0, 0],
-                            [150, 200, 0]), dtype=np.double)
-object_2d_point = np.array(([2985, 1688],
-                            [5081, 1690],
-                            [2997, 2797],
-                            [5544, 2757]), dtype=np.double)
-camera_matrix = np.array(([6800.7, 0, 3065.8],
-                         [0, 6798.1, 1667.6],
-                         [0, 0, 1.0]), dtype=np.double)
-dist_coefs = np.array([-0.189314, 0.444657, -0.00116176,
-                      0.00164877, -2.57547], dtype=np.double)
+human36m_camera_intrinsic = {
+    # R：旋转矩阵
+    "R": [[-0.91536173, 0.40180837, 0.02574754],
+          [0.05154812, 0.18037357, -0.98224649],
+          [-0.39931903, -0.89778361, -0.18581953]],
+    # T：平移向量
+    "T": [1841.10702775, 4955.28462345, 1563.4453959],
+    # 焦距：f/dx, f/dy
+    "f": [1.26843647e+03, 1.26953172e+03],
+    # Principal Point：主点，主轴与像平面的交点
+    "c": [8.55216528e+02, 6.38366415e+02]
 
-# 求解相机位姿
-found, rvec, tvec = cv2.solvePnP(
-    object_3d_points, object_2d_point, camera_matrix, dist_coefs)
-rotM = cv2.Rodrigues(rvec)[0]
-camera_postion = -np.matrix(rotM).T * np.matrix(tvec)
-print(camera_postion.T)
+}
 
-# 验证根据博客http://www.cnblogs.com/singlex/p/pose_estimation_1.html提供方法求解相机位姿
-# 计算相机坐标系的三轴旋转欧拉角，旋转后可以转出世界坐标系。旋转顺序z,y,x
-thetaZ = math.atan2(rotM[1, 0], rotM[0, 0])*180.0/math.pi
-thetaY = math.atan2(-1.0*rotM[2, 0], math.sqrt(rotM[2, 1]
-                    ** 2 + rotM[2, 2]**2))*180.0/math.pi
-thetaX = math.atan2(rotM[2, 1], rotM[2, 2])*180.0/math.pi
-# 相机坐标系下值
-x = tvec[0]
-y = tvec[1]
-z = tvec[2]
-# 进行三次旋转
+kinect2_camera_intrinsic = {
+
+    # R，旋转矩阵
+    "R": [[0.999853, -0.00340388, 0.0167495],
+          [0.00300206, 0.999708, 0.0239986],
+          [-0.0168257, -0.0239459, 0.999571]],
+    # t，平移向量
+    "T": [15.2562, 70.2212, -10.9926],
+    # 焦距，f/dx, f/dy
+    "f": [367.535, 367.535],
+    # principal point，主点，主轴与像平面的交点
+    "c": [260.166, 205.197]
+
+}
+
+camera_intrinsic = human36m_camera_intrinsic
+# camera_intrinsic = kinect2_camera_intrinsic
+
+class CameraTools(object):
+
+    @staticmethod
+    def convert_wc_to_cc(joint_world):
+        """
+        世界坐标系 -> 相机坐标系: R * (pt - T):
+        joint_cam = np.dot(R, (joint_world - T).T).T
+        :return:
+        """
+        joint_world = np.asarray(joint_world)
+        R = np.asarray(camera_intrinsic["R"])
+        T = np.asarray(camera_intrinsic["T"])
+        joint_num = len(joint_world)
+        # 世界坐标系 -> 相机坐标系
+        # [R|t] world coords -> camera coords
+        # joint_cam = np.zeros((joint_num, 3))  # joint camera
+        # for i in range(joint_num):  # joint i
+        #     joint_cam[i] = np.dot(R, joint_world[i] - T)  # R * (pt - T)
+        # .T is 转置, T is translation mat
+        joint_cam = np.dot(R, (joint_world - T).T).T  # R * (pt - T)
+        return joint_cam
+
+    @staticmethod
+    def convert_cc_to_wc(joint_world):
+        """
+        相机坐标系 -> 世界坐标系: inv(R) * pt +T 
+        joint_cam = np.dot(inv(R), joint_world.T)+T
+        :return:
+        """
+        joint_world = np.asarray(joint_world)
+        R = np.asarray(camera_intrinsic["R"])
+        T = np.asarray(camera_intrinsic["T"])
+        # 相机坐标系 -> 世界坐标系
+        joint_cam = np.dot(np.linalg.inv(R), joint_world.T).T + T
+        return joint_cam
+
+    @staticmethod
+    def __cam2pixel(cam_coord, f, c):
+        """
+        相机坐标系 -> 像素坐标系: (f / dx) * (X / Z) = f * (X / Z) / dx
+        cx,ppx=260.166; cy,ppy=205.197; fx=367.535; fy=367.535
+        将从3D(X,Y,Z)映射到2D像素坐标P(u,v)计算公式为：
+        u = X * fx / Z + cx
+        v = Y * fy / Z + cy
+        D(v,u) = Z / Alpha
+        =====================================================
+        camera_matrix = [[428.30114, 0.,   316.41648],
+                        [   0.,    427.00564, 218.34591],
+                        [   0.,      0.,    1.]])
+
+        fx = camera_intrinsic[0, 0]
+        fy = camera_intrinsic[1, 1]
+        cx = camera_intrinsic[0, 2]
+        cy = camera_intrinsic[1, 2]
+        =====================================================
+        :param cam_coord:
+        :param f: [fx,fy]
+        :param c: [cx,cy]
+        :return:
+        """
+        # 等价于：(f / dx) * (X / Z) = f * (X / Z) / dx
+        # 三角变换， / dx, + center_x
+        u = cam_coord[..., 0] / cam_coord[..., 2] * f[0] + c[0]
+        v = cam_coord[..., 1] / cam_coord[..., 2] * f[1] + c[1]
+        d = cam_coord[..., 2]
+        return u, v, d
+
+    @staticmethod
+    def convert_cc_to_ic(joint_cam):
+        """
+        相机坐标系 -> 像素坐标系
+        :param joint_cam:
+        :return:
+        """
+        # 相机坐标系 -> 像素坐标系，并 get relative depth
+        # Subtract center depth
+        # 选择 Pelvis骨盆 所在位置作为相机中心，后面用之求relative depth
+        root_idx = 0
+        center_cam = joint_cam[root_idx]  # (x,y,z) mm
+        joint_num = len(joint_cam)
+        f = camera_intrinsic["f"]
+        c = camera_intrinsic["c"]
+        # joint image_dict，像素坐标系，Depth 为相对深度 mm
+        joint_img = np.zeros((joint_num, 3))
+        joint_img[:, 0], joint_img[:, 1], joint_img[:, 2] = CameraTools.__cam2pixel(joint_cam, f, c)  # x,y
+        joint_img[:, 2] = joint_img[:, 2] - center_cam[2]  # z
+        return joint_img
 
 
-def RotateByZ(Cx, Cy, thetaZ):
-    rz = thetaZ*math.pi/180.0
-    outX = math.cos(rz)*Cx - math.sin(rz)*Cy
-    outY = math.sin(rz)*Cx + math.cos(rz)*Cy
-    return outX, outY
+def demo_for_human36m():
+    joint_world = [[-91.679, 154.404, 907.261],
+                   [-223.23566, 163.80551, 890.5342],
+                   [-188.4703, 14.077106, 475.1688],
+                   [-261.84055, 186.55286, 61.438915],
+                   [39.877888, 145.00247, 923.98785],
+                   [-11.675994, 160.89919, 484.39148],
+                   [-51.550297, 220.14624, 35.834396],
+                   [-132.34781, 215.73018, 1128.8396],
+                   [-97.1674, 202.34435, 1383.1466],
+                   [-112.97073, 127.96946, 1477.4457],
+                   [-120.03289, 190.96477, 1573.4],
+                   [25.895456, 192.35947, 1296.1571],
+                   [107.10581, 116.050285, 1040.5062],
+                   [129.8381, -48.024918, 850.94806],
+                   [-230.36955, 203.17923, 1311.9639],
+                   [-315.40536, 164.55284, 1049.1747],
+                   [-350.77136, 43.442127, 831.3473],
+                   [-102.237045, 197.76935, 1304.0605]]
+    joint_world = np.asarray(joint_world)
+    # 关节点连接线
+    kps_lines = ((0, 7), (7, 8), (8, 9), (9, 10), (8, 11), (11, 12), (12, 13), (8, 14), (14, 15),
+                 (15, 16), (0, 1), (1, 2), (2, 3), (0, 4), (4, 5), (5, 6))
+    # show in 世界坐标系
+    vis.vis_3d(joint_world, kps_lines, coordinate="WC", title="WC", set_lim=True, isshow=True)
+
+    kp_vis = CameraTools()
+
+    # show in 相机坐标系
+    joint_cam = kp_vis.convert_wc_to_cc(joint_world)
+    vis.vis_3d(joint_cam, kps_lines, coordinate="CC", title="CC", set_lim=True, isshow=True)
+    joint_img = kp_vis.convert_cc_to_ic(joint_cam)
+
+    joint_world1 = kp_vis.convert_cc_to_wc(joint_cam)
+    vis.vis_3d(joint_world1, kps_lines, coordinate="WC", title="WC", set_lim=True, isshow=True)
+
+    # show in 像素坐标系
+    kpt_2d = joint_img[:, 0:2]
+    image_path = "./data/s_01_act_02_subact_01_ca_02_000001.jpg"
+    image = image_processing.read_image(image_path)
+    image = image_processing.draw_key_point_in_image(image, key_points=[kpt_2d], pointline=kps_lines)
+    image_processing.cv_show_image("image_dict", image)
 
 
-def RotateByY(Cx, Cz, thetaY):
-    ry = thetaY*math.pi/180.0
-    outZ = math.cos(ry)*Cz - math.sin(ry)*Cx
-    outX = math.sin(ry)*Cz + math.cos(ry)*Cx
-    return outX, outZ
+if __name__ == "__main__":
+    demo_for_human36m()
 
-
-def RotateByX(Cy, Cz, thetaX):
-    rx = thetaX*math.pi/180.0
-    outY = math.cos(rx)*Cy - math.sin(rx)*Cz
-    outZ = math.sin(rx)*Cy + math.cos(rx)*Cz
-    return outY, outZ
-
-
-(x, y) = RotateByZ(x, y, -1.0*thetaZ)
-(x, z) = RotateByY(x, z, -1.0*thetaY)
-(y, z) = RotateByX(y, z, -1.0*thetaX)
-Cx = x*-1
-Cy = y*-1
-Cz = z*-1
-
-# 输出相机位置
-print(Cx, Cy, Cz)
-# 输出相机旋转角
-print(thetaX, thetaY, thetaZ)
-# 对第五个点进行验证
-Out_matrix = np.concatenate((rotM, tvec), axis=1)
-pixel = np.dot(camera_matrix, Out_matrix)
-pixel1 = np.dot(pixel, np.array([0, 100, 105, 1], dtype=np.double))
-pixel2 = pixel1/pixel1[2]
-print(pixel2)

@@ -10,7 +10,7 @@ dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
 parameters = cv2.aruco.DetectorParameters_create()
 
 # 加载包含 ArUco 标记的图像
-image = cv2.imread('./aruco/微信图片_20230411175910.jpg')
+image = cv2.imread('./aruco/IMG_20230420_153745.jpg')
 
 # 检测图像中的标记
 corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(image, dictionary, parameters=parameters)
