@@ -1,11 +1,14 @@
 <!--
- * @Descripttion: 
- * @Author: yang fu ren
+ * @Editor: Microsoft VS Code
+ * @Author: HuangRongQuan
  * @version: 
  * @Date: 2023-03-27 09:53:13
- * @LastEditors: yang fu ren
- * @LastEditTime: 2023-04-20 18:03:24
+ * @LastEditors: 
+ * @LastEditTime: 2023-04-21 15:31:14
+ * @FilePath: \UAV-close-range-photogrammetry-to-monitor-landslide-deformation-main\README.md
+ * @Descripttion: 
 -->
+
 # **<center>无人机近景摄影测量监测滑坡形变</center>**
 
 ![](Assets/无人机近景摄影测量监测滑坡形变.png)<br>
@@ -35,7 +38,13 @@
 [python下使用aruco标记进进行三维姿势估计](https://blog.csdn.net/dgut_guangdian/article/details/107814300)<br>
 [OpenCV基础（19）使用 OpenCV 和 Python 检测 ArUco 标记](https://blog.csdn.net/weixin_43229348/article/details/120565635)<br>
 [python+opencv2相机位姿估计](https://www.cnblogs.com/subic/p/8296794.html)<br>
+
+[相机位姿估计0：基本原理之如何解PNP问题](https://www.cnblogs.com/singlex/p/pose_estimation_0.html)<br>
 [相机位姿估计1：根据四个特征点估计相机姿态](https://www.cnblogs.com/singlex/p/pose_estimation_1.html)<br>
+[相机位姿估计1_1：OpenCV:solvePnP二次封装与性能测试](https://www.cnblogs.com/singlex/p/pose_estimation_1_1.html)<br>
+[相机位姿估计2：[应用]实时位姿估计与三维重建相机姿态](https://www.cnblogs.com/singlex/p/pose_estimation_2.html)<br>
+[相机位姿估计3：根据两幅图像的位姿估计结果求某点的世界坐标](https://www.cnblogs.com/singlex/p/pose_estimation_3.html)<br>
+
 [使用相机校准和 PnP 将像素坐标系 2D 坐标点 （u， v） 转换为世界坐标系 3D 坐标点 （X、Y、Z）](https://github.com/cong/2Dto3D)<br>
 [2021-03-08 Python OpenCV calibrateCamera()函数](https://www.jianshu.com/p/d9c4fb366fe2)<br>
 [相机内部参数矩阵获取(python+opencv)](https://zhuanlan.zhihu.com/p/420927518)<br>
@@ -61,3 +70,5 @@
 []()<br>
 []()<br>
 []()<br>
+
+

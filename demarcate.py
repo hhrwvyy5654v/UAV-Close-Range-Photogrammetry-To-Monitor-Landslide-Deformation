@@ -5,11 +5,13 @@ import os
 import cv2
 import numpy as np
 
-# 棋盘格模板规格,只算内角点个数,不算最外面的一圈点
-width = 11
-height = 8
+# 定义棋盘格模板规格:只算内角点个数,不算最外面的一圈点
+pattern_size = (11, 8)
+# 定义每个棋盘格的物理尺寸（单位：毫米）
+square_size = 40.0
 
-# 图片在文件夹的位置
+
+# 图像所在文件夹的位置
 original_images = './CalibrationPlate/original/'   # 原始图片保存位置
 resize_images = './CalibrationPlate/resize/'   # 调整尺寸后的图像保存位置
 corner_images = './CalibrationPlate/corner/'   # 显示角点的图像保存位置
@@ -36,13 +38,15 @@ new_height = 600
 ResizeImage(original_images, resize_images, new_width, new_height)
 
 
-# 寻找棋盘格角点
-# 初始化一个大小为width*height*3的0矩阵
-world_point = np.zeros((width * height, 3), np.float32)
+# 世界坐标系中的棋盘格点,例如(0,0,0),(2,0,0)...(8,5,0)，去掉Z坐标，记为二维矩阵
+world_point = np.zeros((pattern_size[0] * pattern_size[1], 3), np.float32)
 # 将世界坐标系建在标定板上，所有点的Z坐标全部为0，所以只需要赋值x和y
-world_point[:, :2] = np.mgrid[0:width, 0:height].T.reshape(-1, 2)
+world_point[:, :2] = np.mgrid[0:pattern_size[0]*square_size:square_size,
+                              0:pattern_size[1]*square_size:square_size].T.reshape(-1, 2)
+# 储存棋盘格角点的世界坐标和图像坐标对
 world_points = []  # 世界坐标系中的三维点
 image_points = []  # 图像平面的二维点
+
 
 """
 角点精准化迭代过程的终止条件:
@@ -63,16 +67,16 @@ for fname in images:
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)   # RGB转灰度
     # 寻找棋盘格角点,存放角点于corners中
     # 如果找到足够点对,将其存储起来,ret为非零值
-    ret, corners = cv2.findChessboardCorners(gray, (width, height), None)
+    ret, corners = cv2.findChessboardCorners(gray, pattern_size, None)
     # 检测到角点后,进行亚像素级别角点检测,更新角点
 
     if ret == True:
         index += 1
         # 输入图像gray;角点初始坐标corners;搜索窗口为2*winsize+1;表示窗口的最小(-1.-1)表示忽略;求角点的迭代终止条件
         cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
-        world_points.append(world_point)   # 空间坐标
-        image_points.append(corners)  # 角点坐标即图像坐标
-        cv2.drawChessboardCorners(image, (width, height), corners, ret)
+        world_points.append(world_point)   # 世界坐标
+        image_points.append(corners)  # 图像坐标
+        cv2.drawChessboardCorners(image, pattern_size, corners, ret)
         cv2.imwrite(corner_images + '/corners_' + str(index) + '.jpg', image)
         cv2.waitKey(10)
 
@@ -92,6 +96,10 @@ cv2.destroyAllWindows()
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(
     world_points, image_points, gray.shape[::-1], None, None)
 
+# 保存相机参数(内参矩阵、畸变参数、旋转向量、平移向量)
+np.savez('./Parameter/豪威OV48B.npz', mtx=mtx, dist=dist,
+         rvecs=rvecs, tvecs=tvecs)  # 分别使用mtx,dist,rvecs,tvecs命名数组
+
 print("ret(重投影误差):", ret,
       "\n\nmtx(内参矩阵):\n", mtx,
       "\n\ndist(畸变参数):\n", dist,  # 5个畸变参数,(k_1,k_2,p_1,p_2,k_3)
@@ -99,10 +107,6 @@ print("ret(重投影误差):", ret,
       "\n\ntvecs(平移向量):\n", tvecs
       )
 
-# 保存相机参数(内参矩阵、畸变参数、旋转向量、平移向量)
-np.savez('./Parameter/豪威OV48B.npz', mtx=mtx, dist=dist,
-         rvecs=rvecs, tvecs=tvecs)  # 分别使用mtx,dist,rvecs,tvecs命名数组
-
 # cv2.Rodrigues()函数用于将旋转向量转换为旋转矩阵
 R, jacobian = cv2.Rodrigues(rvecs[0])
-print("\n旋转矩阵:\n",R)
+print("\n旋转矩阵:\n", R)

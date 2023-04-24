@@ -1,11 +1,3 @@
-'''
-Descripttion: 
-Author: yang fu ren
-version: 
-Date: 2023-04-20 18:47:34
-LastEditors: yang fu ren
-LastEditTime: 2023-04-20 19:33:44
-'''
 import cv2
 import numpy as np
 
@@ -21,7 +13,7 @@ dist = np.array([[9.86732100e-02, -4.94565440e-01, -
 
 
 # 定义像素坐标
-img_point = np.array([[474, 280]], dtype=np.float32)
+img_point = np.array([[306.5,481.75],[290.0,456.0]], dtype=np.float32)
 
 # 像素坐标转换为相机坐标
 cam_point = cv2.undistortPoints(img_point, mtx, dist)
