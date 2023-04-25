@@ -15,6 +15,7 @@ from PIL import Image, ImageTk
 PI=math.pi
 RoundAngle=180.0
 
+
 class PNP_Solver():
     def __init__(self):
         self.Points3D = np.zeros((1, 4, 3), np.float32)  # 存放4组世界坐标位置
@@ -52,16 +53,16 @@ class PNP_Solver():
     def CodeRotateByZ(self, x,  y,  thetaz):
         x1 = x  # 将变量拷贝一次，保证&x == &outx这种情况下也能计算正确
         y1 = y
-        rz = thetaz*PI/180
+        rz = thetaz*PI/RoundAngle
         outx = math.cos(rz)*x1 - math.sin(rz)*y1
         outy = math.sin(rz)*x1 + math.cos(rz)*y1
         return outx, outy
 
-    # 第二次旋转：将空间点绕Z轴旋转
+    # 第二次旋转：将空间点绕Y轴旋转
     def CodeRotateByY(self, x, z, thetay):
         x1 = x
         z1 = z
-        ry = thetay * PI / 180
+        ry = thetay * PI / RoundAngle
         outx = math.cos(ry) * x1 + math.sin(ry) * z1
         outz = math.cos(ry) * z1 - math.sin(ry) * x1
         return outx, outz
@@ -70,7 +71,7 @@ class PNP_Solver():
     def CodeRotateByX(self, y, z, thetax):
         y1 = y
         z1 = z
-        rx = (thetax * PI) / 180
+        rx = (thetax * PI) / RoundAngle
         outy = math.cos(rx) * y1 - math.sin(rx) * z1
         outz = math.cos(rx) * z1 + math.sin(rx) * y1
         return outy, outz
@@ -237,15 +238,15 @@ if __name__ == "__main__":
     P12 = np.array([-50, 50, 0])
     P13 = np.array([50, -50, 0])
     P14 = np.array([50, 50, 0]) 
-    p11 = np.array([3171.25 , 4395.25])
-    p12 = np.array([3594.5 , 4475.0])
-    p13 = np.array([3171.25 , 4395.25])
-    p14 = np.array([3339.5 , 4642.5 ]) 
+    p11 = np.array([342.0 , 423.0])
+    p12 = np.array([359.0 , 447.25])
+    p13 = np.array([316.75 , 439.25])
+    p14 = np.array([333.5 , 464.0]) 
 
     p4psolver1.Points3D[0] = np.array([P11,P12,P13,P14])
     p4psolver1.Points2D[0] = np.array([p11,p12,p13,p14])
 
-    p4psolver1.point2find = np.array([150, 50])
+    p4psolver1.point2find = np.array([306.5 , 481.75])
     p4psolver1.getudistmap(calibrationfile)
     p4psolver1.solver()
 
@@ -257,14 +258,14 @@ if __name__ == "__main__":
     P23 = np.array([50, -50, 0])
     P24 = np.array([50, 50, 0])
     
-    p21 = np.array([3152.75 , 4768.25])
-    p22 = np.array([3312.25 , 4999.0])
-    p23 = np.array([2902.0 , 4926.25])
-    p24 = np.array([3060.75 , 5164.5])
+    p21 = np.array([415.0 , 417.0])
+    p22 = np.array([436.0 , 437.5])
+    p23 = np.array([394.0 , 436.5])
+    p24 = np.array([415.0 , 457.0])
 
     p4psolver2.Points3D[0] = np.array([P21,P22,P23,P24])
     p4psolver2.Points2D[0] = np.array([p21,p22,p23,p24])
-    p4psolver2.point2find = np.array([150, 50])
+    p4psolver2.point2find = np.array([393.0,478.0])
     p4psolver2.getudistmap(calibrationfile)
     p4psolver2.solver()
 
@@ -300,9 +301,3 @@ if __name__ == "__main__":
     pt = (g.PonA + g.PonB)/2
 
     print(pt)
-
-
-
-A = np.array([241.64926392,-78.7377477,166.08307887])
-B = np.array([141.010851,-146.64449841,167.28164652])
-print(math.sqrt(np.dot(A-B,A-B)))

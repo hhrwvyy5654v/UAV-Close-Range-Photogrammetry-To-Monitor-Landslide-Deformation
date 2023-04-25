@@ -16,7 +16,6 @@ camera_parameter = {
 
 
 def pixel_to_world(camera_intrinsics, r, t, img_points):
-
     K_inv = camera_intrinsics.I
     R_inv = np.asmatrix(r).I
     R_inv_T = np.dot(R_inv, np.asmatrix(t))

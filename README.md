@@ -31,7 +31,10 @@
 [多帧三角化原理](https://zhuanlan.zhihu.com/p/112307480)<br>
 [相机位姿估计3：根据两幅图像的位姿估计结果求某点的世界坐标](https://blog.csdn.net/ikke2682/article/details/54743483)<br>
 [2D坐标系与3D坐标系的相互转换--python实现](http://chr10003566.github.io/2019/07/15/2D%E5%9D%90%E6%A0%87%E7%B3%BB%E4%B8%8E3D%E5%9D%90%E6%A0%87%E7%B3%BB%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2--python%E5%AE%9E%E7%8E%B0/)<br>
+
 [根据相机位姿求指定点的世界坐标及其python实现](https://www.jianshu.com/p/77f7c0cd9ec7)<br>
+[像素坐标转世界坐标的计算](https://www.jianshu.com/p/4566a1281066)<br>
+
 [根据两幅图像的位姿估计结果求某点的世界坐标](https://www.cnblogs.com/singlex/p/pose_estimation_3.html)<br>
 [子坐标系C在父坐标系W中的旋转问题](https://www.cnblogs.com/singlex/p/6037020.html)<br>
 [机器视觉——相机标定（四个坐标系的关系）](https://blog.csdn.net/zxf1314ll/article/details/115654320)<br>

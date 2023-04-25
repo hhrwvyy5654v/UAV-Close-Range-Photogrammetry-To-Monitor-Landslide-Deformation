@@ -109,4 +109,7 @@ print("ret(重投影误差):", ret,
 
 # cv2.Rodrigues()函数用于将旋转向量转换为旋转矩阵
 R, jacobian = cv2.Rodrigues(rvecs[0])
-print("\n旋转矩阵:\n", R)
+print("\n旋转矩阵[0]:\n", R)
+
+R, jacobian = cv2.Rodrigues(rvecs[1])
+print("\n旋转矩阵[1]:\n", R)
