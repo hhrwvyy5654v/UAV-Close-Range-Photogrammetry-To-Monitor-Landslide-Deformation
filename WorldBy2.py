@@ -1,4 +1,3 @@
-
 import cv2
 import numpy as np
 
@@ -60,6 +59,7 @@ world_coord_example = triangulate_points(
     np.array([pixel_coord_example2], dtype=np.float32),
     camera_matrix, rvec1, tvec1, rvec2, tvec2
 )[0]
+
 print(f"图像1的像素坐标{pixel_coord_example1}和图像2的像素坐标{pixel_coord_example2}所对应世界坐标:\n{world_coord_example}")
 """
 根据两幅图像和图像上对应的四个点的世界坐标和像素坐标,求其它点的世界坐标。
