@@ -102,14 +102,14 @@ np.savez('./Parameter/豪威OV48B.npz', mtx=mtx, dist=dist,
 
 print("ret(重投影误差):", ret,
       "\n\nmtx(内参矩阵):\n", mtx,
-      "\n\ndist(畸变参数):\n", dist,  # 5个畸变参数,(k_1,k_2,p_1,p_2,k_3)
+      "\n\ndist(畸变参数):\n", dist,  # 5个畸变参数,(k1,k2,p1,p2,k3)
       "\n\nrvecs(旋转向量):\n", rvecs,
       "\n\ntvecs(平移向量):\n", tvecs
       )
 
-# cv2.Rodrigues()函数用于将旋转向量转换为旋转矩阵
-R, jacobian = cv2.Rodrigues(rvecs[0])
-print("\n旋转矩阵[0]:\n", R)
+# # cv2.Rodrigues()函数用于将旋转向量转换为旋转矩阵
+# R, jacobian = cv2.Rodrigues(rvecs[0])
+# print("\n旋转矩阵[0]:\n", R)
 
-R, jacobian = cv2.Rodrigues(rvecs[1])
-print("\n旋转矩阵[1]:\n", R)
+# R, jacobian = cv2.Rodrigues(rvecs[1])
+# print("\n旋转矩阵[1]:\n", R)
