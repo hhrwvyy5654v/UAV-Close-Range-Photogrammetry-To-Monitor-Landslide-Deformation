@@ -53,6 +53,22 @@ def compute_3d_coordinates(points, known_3d_coords, known_2d_coords, camera_matr
     return np.array(points_3d)
 
 
+def compute_3d_coordinates(points, known_3d_coords, known_2d_coords, camera_matrix):
+    # Find homography between known 2D coordinates and detected 2D points
+    corresponding_points = points[:len(known_2d_coords)]  # Assuming the first four points correspond to known_2d_coords
+    _, homography = cv2.findHomography(known_2d_coords, corresponding_points)
+
+    # Compute 3D coordinates for the detected points
+    points_3d = []
+    for pt in points:
+        pt_homogeneous = np.append(pt, 1)
+        world_coord = np.dot(np.linalg.inv(homography), pt_homogeneous)
+        world_coord /= world_coord[-1]
+        points_3d.append(world_coord[:3])
+
+    return np.array(points_3d)
+
+
 def analyze_deformation(coords1, coords2):
     # 计算两组 3D 坐标之间的变形
     deformation = np.linalg.norm(coords1 - coords2, axis=1)

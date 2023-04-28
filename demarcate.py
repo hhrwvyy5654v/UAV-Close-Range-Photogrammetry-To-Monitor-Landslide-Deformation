@@ -9,8 +9,6 @@ import numpy as np
 pattern_size = (11, 8)
 # 定义每个棋盘格的物理尺寸（单位：毫米）
 square_size = 40.0
-
-
 # 图像所在文件夹的位置
 original_images = './CalibrationPlate/original/'   # 原始图片保存位置
 resize_images = './CalibrationPlate/resize/'   # 调整尺寸后的图像保存位置
@@ -52,7 +50,7 @@ image_points = []  # 图像平面的二维点
 角点精准化迭代过程的终止条件:
 第一项:表示迭代次数达到最大次数时停止迭代;
 第二项:表示角点位置变化的最小值已经达到最小时停止迭代;
-第三项和第四项：表示设置寻找亚像素角点的参数,2
+第三项和第四项：表示设置寻找亚像素角点的参数,
 采用的停止准则是最大循环次数30和最大误差容限0.001
 """
 criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER,
@@ -79,8 +77,7 @@ for fname in images:
         cv2.drawChessboardCorners(image, pattern_size, corners, ret)
         cv2.imwrite(corner_images + '/corners_' + str(index) + '.jpg', image)
         cv2.waitKey(10)
-
-cv2.destroyAllWindows()
+    cv2.destroyAllWindows()
 
 
 """
@@ -106,10 +103,3 @@ print("ret(重投影误差):", ret,
       "\n\nrvecs(旋转向量):\n", rvecs,
       "\n\ntvecs(平移向量):\n", tvecs
       )
-
-# # cv2.Rodrigues()函数用于将旋转向量转换为旋转矩阵
-# R, jacobian = cv2.Rodrigues(rvecs[0])
-# print("\n旋转矩阵[0]:\n", R)
-
-# R, jacobian = cv2.Rodrigues(rvecs[1])
-# print("\n旋转矩阵[1]:\n", R)

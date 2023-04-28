@@ -21,7 +21,7 @@ def triangulate_points(pixel_coords1, pixel_coords2, camera_matrix, rvec1, tvec1
     return world_coords
 
 
-# 两幅图像的世界坐标和像素坐标
+# 两幅图像中对应的世界坐标和像素坐标
 world_coords_list = [
     np.array([[-50, -50, 0], [-50, 50, 0], [50, -50, 0],
              [50, 50, 0]], dtype=np.float32),

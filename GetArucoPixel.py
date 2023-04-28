@@ -28,4 +28,5 @@ for i in range(len(corners)):
     # 计算当前标记的中心点
     center = np.mean(markerCorners, axis=0)
     # 打印当前标记的中心点
-    print("id",ids[i],":",center[0],",",center[1])
+    for 
+    print("id",ids[i],center[0],center[1])
