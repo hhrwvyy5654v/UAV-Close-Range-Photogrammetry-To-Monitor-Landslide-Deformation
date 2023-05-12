@@ -45,6 +45,9 @@ dist_coeffs = np.array([9.86732100e-02, -4.94565440e-01, -4.51708736e-04,
 # 计算两幅图像的相机姿态
 camera_poses = [estimate_camera_pose(world_coords, pixel_coords, camera_matrix, dist_coeffs)
                 for world_coords, pixel_coords in zip(world_coords_list, pixel_coords_list)]
+# 获取每幅图像的旋转向量rvec和平移向量tvec
+rvec1, tvec1 = camera_poses[0]
+rvec2, tvec2 = camera_poses[1]
 
 
 pixel_coord_example1 = (403.75, 433.0)
@@ -52,8 +55,7 @@ pixel_coord_example2 = (452.5, 452.5)
 
 # pixel_coord_example1 = (405.25 , 463.75)
 # pixel_coord_example2 = (454.0 , 486.5)
-rvec1, tvec1 = camera_poses[0]
-rvec2, tvec2 = camera_poses[1]
+
 world_coord_example = triangulate_points(
     np.array([pixel_coord_example1], dtype=np.float32),
     np.array([pixel_coord_example2], dtype=np.float32),
@@ -61,6 +63,4 @@ world_coord_example = triangulate_points(
 )[0]
 
 print(f"图像1的像素坐标{pixel_coord_example1}和图像2的像素坐标{pixel_coord_example2}所对应世界坐标:\n{world_coord_example}")
-"""
-根据两幅图像和图像上对应的四个点的世界坐标和像素坐标,求其它点的世界坐标。
-"""
+

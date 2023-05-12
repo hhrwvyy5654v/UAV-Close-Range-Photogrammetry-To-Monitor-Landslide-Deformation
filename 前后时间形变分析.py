@@ -55,7 +55,8 @@ def compute_3d_coordinates(points, known_3d_coords, known_2d_coords, camera_matr
 
 def compute_3d_coordinates(points, known_3d_coords, known_2d_coords, camera_matrix):
     # Find homography between known 2D coordinates and detected 2D points
-    corresponding_points = points[:len(known_2d_coords)]  # Assuming the first four points correspond to known_2d_coords
+    # Assuming the first four points correspond to known_2d_coords
+    corresponding_points = points[:len(known_2d_coords)]
     _, homography = cv2.findHomography(known_2d_coords, corresponding_points)
 
     # Compute 3D coordinates for the detected points
