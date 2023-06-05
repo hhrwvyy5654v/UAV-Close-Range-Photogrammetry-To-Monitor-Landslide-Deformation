@@ -1,18 +1,24 @@
-"""_通过张正友标定法获取相机参数_
-"""
-# 导包
+'''
+Description: 使用张正友标定法获取相机的内部参数和畸变参数并矫正畸变的图像
+FilePath: \Demarcate.py
+Author: hhrwvyy5654v huang_rongquan@outlook.com
+Date: 2023-05-03 18:37:15
+LastEditors: hhrwvyy5654v huang_rongquan@outlook.com
+LastEditTime: 2023-05-31 11:02:50
+Copyright (c) 2023 by hhrwvyy5654v , All Rights Reserved. 
+'''
 import os
 import cv2
 import numpy as np
 
 # 定义棋盘格模板规格:只算内角点个数,不算最外面的一圈点
 pattern_size = (11, 8)
-# 定义每个棋盘格的物理尺寸（单位：毫米）
+# 定义每个棋盘格的物理尺寸(单位：毫米)
 square_size = 40.0
 # 图像所在文件夹的位置
 original_images = './CalibrationPlate/original/'   # 原始图片保存位置
 resize_images = './CalibrationPlate/resize/'   # 调整尺寸后的图像保存位置
-corner_images = './CalibrationPlate/corner/'   # 显示角点的图像保存位置
+corrected_image = './CalibrationPlate/corrected/'  # 矫正畸变后的图像的保存位置
 
 
 def ResizeImage(input, output, width, height):
@@ -31,9 +37,9 @@ def ResizeImage(input, output, width, height):
 
 
 # 更改图片尺寸
-new_width = 800
-new_height = 600
-ResizeImage(original_images, resize_images, new_width, new_height)
+new_width = 4000
+new_height = 3000
+# ResizeImage(original_images, resize_images, new_width, new_height)
 
 
 # 世界坐标系中的棋盘格点,例如(0,0,0),(2,0,0)...(8,5,0)，去掉Z坐标，记为二维矩阵
@@ -59,7 +65,6 @@ criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER,
 
 images = os.listdir(resize_images)   # 读入图像序列
 index = 0
-
 for fname in images:
     image = cv2.imread(resize_images + '/' + fname)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)   # RGB转灰度
@@ -74,10 +79,6 @@ for fname in images:
         cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
         world_points.append(world_point)   # 世界坐标
         image_points.append(corners)  # 图像坐标
-        cv2.drawChessboardCorners(image, pattern_size, corners, ret)
-        cv2.imwrite(corner_images + '/corners_' + str(index) + '.jpg', image)
-        cv2.waitKey(10)
-    cv2.destroyAllWindows()
 
 
 """
@@ -97,9 +98,38 @@ ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(
 np.savez('./Parameter/豪威OV48B.npz', mtx=mtx, dist=dist,
          rvecs=rvecs, tvecs=tvecs)  # 分别使用mtx,dist,rvecs,tvecs命名数组
 
+# 打印输出相机参数
 print("ret(重投影误差):", ret,
       "\n\nmtx(内参矩阵):\n", mtx,
       "\n\ndist(畸变参数):\n", dist,  # 5个畸变参数,(k1,k2,p1,p2,k3)
       "\n\nrvecs(旋转向量):\n", rvecs,
       "\n\ntvecs(平移向量):\n", tvecs
       )
+
+
+# 利用已知的相机矩阵mtx和畸变系数dist以及新的图像宽度和高度来计算一个新的相机矩阵用于后续去除图像中的畸变
+NewCameraMatrix, roi = cv2.getOptimalNewCameraMatrix(
+    mtx, dist, (new_width, new_height), 0, (new_width, new_height))
+# 打印输出新的相机矩阵
+print("\nNewCameraMatrix(优化后相机内参):\n", NewCameraMatrix)
+
+
+images = os.listdir(resize_images)   # 读入图像序列
+index = 0
+
+for fname in images:
+    image = cv2.imread(resize_images + fname)
+    dst = cv2.undistort(image, mtx, dist, None, NewCameraMatrix)
+    cv2.imwrite(corrected_image+fname, dst)
+
+# 计算反投影误差(反投影误差是指通过将三维点投影到二维图像上得到的点与实际检测到的二维点之间的误差)
+total_error = 0  # 用于存储所有点的误差之和
+for i in range(len(world_points)):  # 循环遍历所有的三维点
+    image_points_, _ = cv2.projectPoints(
+        world_points[i], rvecs[i], tvecs[i], mtx, dist)   # 计算每个三维点在图像上的投影点
+    error = cv2.norm(image_points[i], image_points_, cv2.NORM_L2) / \
+        len(image_points_)   # 反投影得到的点与图像上检测到的点的误差
+    total_error += error # 计算出所有点的反投影误差
+    
+# 将所有点的误差之和除以点的数量得到平均误差
+print(("\nTotal Error(反投影误差): "), total_error / len(world_points))   

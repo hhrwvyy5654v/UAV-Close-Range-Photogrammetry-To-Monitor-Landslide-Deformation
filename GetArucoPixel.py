@@ -1,24 +1,32 @@
+'''
+Description: 
+FilePath: \GetArucoPixel.py
+Author: hhrwvyy5654v huang_rongquan@outlook.com
+Date: 2023-05-03 18:37:15
+LastEditors: hhrwvyy5654v huang_rongquan@outlook.com
+LastEditTime: 2023-05-31 14:59:03
+Copyright (c) 2023 by hhrwvyy5654v , All Rights Reserved. 
+'''
 """_获取aruco码的像素坐标_
 """
-import cv2
-import numpy as np
 
 # 加载用于生成标记的字典
+import cv2
+import numpy as np
 dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
 
 # 使用默认值初始化检测器参数
 parameters = cv2.aruco.DetectorParameters_create()
 
 # 加载包含 ArUco 标记的图像
-image = cv2.imread('./Aruco/IMG_20230425_171500.jpg')
+image = cv2.imread('./Aruco/IMG_20230531_145710.jpg')
 
 # 检测图像中的标记
-corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(image, dictionary, parameters=parameters)
+corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(
+    image, dictionary, parameters=parameters)
 
 # 在图像上绘制检测到的标记
 image = cv2.aruco.drawDetectedMarkers(image, corners)
-
-
 
 
 # 计算每个标记的中心点
@@ -28,4 +36,4 @@ for i in range(len(corners)):
     # 计算当前标记的中心点
     center = np.mean(markerCorners, axis=0)
     # 打印当前标记的中心点
-    print("id",ids[i],center[0],center[1])
+    print("id", ids[i], center[0], center[1])
