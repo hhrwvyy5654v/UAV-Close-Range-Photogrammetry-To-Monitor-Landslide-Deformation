@@ -4,7 +4,7 @@ FilePath: \GetArucoPixel.py
 Author: hhrwvyy5654v huang_rongquan@outlook.com
 Date: 2023-05-03 18:37:15
 LastEditors: hhrwvyy5654v huang_rongquan@outlook.com
-LastEditTime: 2023-05-31 14:59:03
+LastEditTime: 2023-06-12 14:33:55
 Copyright (c) 2023 by hhrwvyy5654v , All Rights Reserved. 
 '''
 
@@ -17,7 +17,7 @@ dictionary = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
 parameters = cv2.aruco.DetectorParameters_create()
 
 # 加载包含 ArUco 标记的图像
-image = cv2.imread('./ArucoShot/IMG_20230531_145710.jpg')
+image = cv2.imread('./ArucoShot/9504x5344/DSC00109.JPG')
 
 # 检测图像中的标记
 corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(

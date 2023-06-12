@@ -1,5 +1,5 @@
 '''
-Description: 
+Description: 获取Aruco码中心点的像素坐标
 FilePath: \ArucoToWord.py
 Author: hhrwvyy5654v huang_rongquan@outlook.com
 Date: 2023-05-15 20:48:08

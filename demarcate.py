@@ -4,9 +4,11 @@ FilePath: \Demarcate.py
 Author: hhrwvyy5654v huang_rongquan@outlook.com
 Date: 2023-05-03 18:37:15
 LastEditors: hhrwvyy5654v huang_rongquan@outlook.com
-LastEditTime: 2023-05-31 11:02:50
+LastEditTime: 2023-06-12 16:09:07
 Copyright (c) 2023 by hhrwvyy5654v , All Rights Reserved. 
 '''
+
+# 导包
 import os
 import cv2
 import numpy as np
@@ -16,9 +18,9 @@ pattern_size = (11, 8)
 # 定义每个棋盘格的物理尺寸(单位：毫米)
 square_size = 40.0
 # 图像所在文件夹的位置
-original_images = './CalibrationPlate/original/'   # 原始图片保存位置
-resize_images = './CalibrationPlate/resize/'   # 调整尺寸后的图像保存位置
-corrected_image = './CalibrationPlate/corrected/'  # 矫正畸变后的图像的保存位置
+original_images = './CalibrationPlate_/original/'   # 原始图片保存位置
+resize_images = './CalibrationPlate_/resize/'   # 调整尺寸后的图像保存位置
+corrected_image = './CalibrationPlate_/corrected/'  # 矫正畸变后的图像的保存位置
 
 
 def ResizeImage(input, output, width, height):
@@ -95,7 +97,7 @@ ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(
     world_points, image_points, gray.shape[::-1], None, None)
 
 # 保存相机参数(内参矩阵、畸变参数、旋转向量、平移向量)
-np.savez('./Parameter/豪威OV48B.npz', mtx=mtx, dist=dist,
+np.savez('./Parameter/13ProMax.npz', mtx=mtx, dist=dist,
          rvecs=rvecs, tvecs=tvecs)  # 分别使用mtx,dist,rvecs,tvecs命名数组
 
 # 打印输出相机参数
@@ -129,7 +131,7 @@ for i in range(len(world_points)):  # 循环遍历所有的三维点
         world_points[i], rvecs[i], tvecs[i], mtx, dist)   # 计算每个三维点在图像上的投影点
     error = cv2.norm(image_points[i], image_points_, cv2.NORM_L2) / \
         len(image_points_)   # 反投影得到的点与图像上检测到的点的误差
-    total_error += error # 计算出所有点的反投影误差
-    
+    total_error += error  # 计算出所有点的反投影误差
+
 # 将所有点的误差之和除以点的数量得到平均误差
-print(("\nTotal Error(反投影误差): "), total_error / len(world_points))   
+print(("\nTotal Error(反投影误差): "), total_error / len(world_points))
