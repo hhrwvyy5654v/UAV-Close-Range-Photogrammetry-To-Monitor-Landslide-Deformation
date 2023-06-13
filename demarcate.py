@@ -4,7 +4,7 @@ FilePath: \Demarcate.py
 Author: hhrwvyy5654v huang_rongquan@outlook.com
 Date: 2023-05-03 18:37:15
 LastEditors: hhrwvyy5654v huang_rongquan@outlook.com
-LastEditTime: 2023-06-12 16:09:07
+LastEditTime: 2023-06-12 16:24:23
 Copyright (c) 2023 by hhrwvyy5654v , All Rights Reserved. 
 '''
 
@@ -39,8 +39,8 @@ def ResizeImage(input, output, width, height):
 
 
 # 更改图片尺寸
-new_width = 4000
-new_height = 3000
+new_width = 9504
+new_height = 5344
 # ResizeImage(original_images, resize_images, new_width, new_height)
 
 

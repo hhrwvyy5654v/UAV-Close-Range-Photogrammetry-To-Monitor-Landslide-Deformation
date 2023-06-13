@@ -117,7 +117,7 @@
 [一文带你搞懂相机内参外参(Intrinsics & Extrinsics)](https://zhuanlan.zhihu.com/p/389653208)<br>
 [三维测量](https://baike.baidu.com/item/%E4%B8%89%E7%BB%B4%E6%B5%8B%E9%87%8F/10037655)<br>
 [三角测量计算点的三维坐标](https://blog.csdn.net/zhaitianyong/article/details/111168657)<br>
-[]()<br>
+[双目相机标定有什么技巧，如何提高标定的精度？](https://www.zhihu.com/question/383516301/answer/1115424480)<br>
 []()<br>
 []()<br>
 []()<br>

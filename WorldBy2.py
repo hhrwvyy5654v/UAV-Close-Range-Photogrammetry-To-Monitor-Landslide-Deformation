@@ -48,7 +48,7 @@ pixel_coords_list = [
 ]
 
 # 加载npz文件读取相机的内参矩阵和畸变系数
-data = np.load('./Parameter/豪威OV48B_8000x6000.npz')
+data = np.load('./Parameter/13ProMax_9504x5344.npz')
 
 # 获取mtx和dist参数
 camera_matrix = data['mtx']
@@ -64,12 +64,12 @@ rvec2, tvec2 = camera_poses[1]
 
 
 # id[4]
-pixel_coord_example1 = (4862.75, 2076.0)
-pixel_coord_example2 = (4841.5, 2100.75)
+# pixel_coord_example1 = (4862.75, 2076.0)
+# pixel_coord_example2 = (4841.5, 2100.75)
 
 # id[5]
-# pixel_coord_example1 = (4569.75,2072.0)
-# pixel_coord_example2 = (4541.25,2100.75)
+pixel_coord_example1 = (4569.75,2072.0)
+pixel_coord_example2 = (4541.25,2100.75)
 
 world_coord_example = triangulate_points(
     np.array([pixel_coord_example1], dtype=np.float32),

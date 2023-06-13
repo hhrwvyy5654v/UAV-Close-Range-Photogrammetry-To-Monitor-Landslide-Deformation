@@ -1,10 +1,13 @@
 '''
-Description:  
+Description:
+    相机的外参指的是相机坐标系相对于世界坐标系的旋转矩阵R和平移向量T。
+    R是一个3x3的旋转矩阵,T是一个3x1的平移向量。
+    它们描述了相机坐标系如何相对于世界坐标系进行旋转和平移。
 FilePath: \BuildingSettlement.py
 Author: hhrwvyy5654v huang_rongquan@outlook.com
 Date: 2023-06-09 09:41:02
 LastEditors: hhrwvyy5654v huang_rongquan@outlook.com
-LastEditTime: 2023-06-12 15:25:27
+LastEditTime: 2023-06-12 18:09:58
 Copyright (c) 2023 by hhrwvyy5654v , All Rights Reserved. 
 '''
 import cv2
