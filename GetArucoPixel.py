@@ -54,3 +54,5 @@ with open(csv_name, mode="w", newline="", encoding="utf-8") as file:
                     writer.writerow(coordinate)
                     # 打印输出
                     print("coordinate:", coordinate)
+            else:
+                print("\n在图像", filename, "中未检测出ArUco码")
