@@ -46,7 +46,7 @@ ax.set_ylabel('Y-axis')
 ax.set_zlabel('Z-axis')
 
 # 设置标题
-ax.set_title('多点世界坐标(X,Y,Z)变化的3D箭头图')
+ax.set_title('监测点的世界坐标(X,Y,Z)变化的3D箭头图')
 
 # 设置坐标轴范围
 all_x = [point['before'][0]
