@@ -1,10 +1,10 @@
 '''
 Description: 使用3D箭头图展示多个监测点世界坐标系的变化
-FilePath: \ArrowGraph\demo2.py
+FilePath: \3D-presentation.py
 Author: hhrwvyy5654v huang_rongquan@outlook.com
 Date: 2023-05-08 11:37:50
 LastEditors: hhrwvyy5654v huang_rongquan@outlook.com
-LastEditTime: 2023-06-12 09:34:43
+LastEditTime: 2023-06-14 10:43:12
 Copyright (c) 2023 by hhrwvyy5654v , All Rights Reserved. 
 '''
 import numpy as np
@@ -16,10 +16,8 @@ plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 # 监测到的多个点的坐标变化数据
 # 每个数组包含相应坐标分量的前后值
 points = [
-    {'before': [-50, -50, 0], 'after': [-70, 60, 13]},
-    {'before': [-50, 50, 0], 'after': [-40, 30, 20]},
-    {'before': [50, -50, 0], 'after': [60, -80, 90]},
-    {'before': [50, 50, 0], 'after': [20, 50, 33]},
+    {'before': [150, -50, 0], 'after': [173.2259, -57.746193, 5.4546866]},
+    {'before': [150, 50, 0], 'after': [168.65923, 41.87658, 5.7979345]},
 ]
 
 
@@ -58,3 +56,7 @@ ax.set_zlim(min(all_z), max(all_z))
 
 # 显示图形
 plt.show()
+
+# 打印对应点的世界坐标的前后变化
+for point in points:
+    print("Before:", point['before'], "After:", point['after'])
