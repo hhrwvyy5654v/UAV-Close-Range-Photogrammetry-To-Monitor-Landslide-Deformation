@@ -4,7 +4,7 @@ FilePath: \3D-presentation.py
 Author: hhrwvyy5654v huang_rongquan@outlook.com
 Date: 2023-05-08 11:37:50
 LastEditors: hhrwvyy5654v huang_rongquan@outlook.com
-LastEditTime: 2023-06-14 10:43:12
+LastEditTime: 2023-06-14 11:06:43
 Copyright (c) 2023 by hhrwvyy5654v , All Rights Reserved. 
 '''
 import numpy as np
@@ -20,20 +20,25 @@ points = [
     {'before': [150, 50, 0], 'after': [168.65923, 41.87658, 5.7979345]},
 ]
 
-
 # 创建3D箭头图
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
+# 颜色列表
+colors = ['red', 'blue', 'green', 'yellow', 'black', 'white',
+          'gray', 'cyan', 'magenta', 'orange', 'pink', 'purple', 'brown']
+
 # 绘制箭头
-for point in points:
+for i, point in enumerate(points):
     x_before, y_before, z_before = point['before']
     x_after, y_after, z_after = point['after']
     dx = x_after - x_before
     dy = y_after - y_before
     dz = z_after - z_before
     ax.quiver(x_before, y_before, z_before, dx, dy,
-              dz, color='b', arrow_length_ratio=0.1)
+              dz, color=colors[i % len(colors)], arrow_length_ratio=0.1)
+    print(colors[i % len(colors)],
+          "{", point['before'], "--->", point['after'], "}")
 
 # 设置坐标轴标签
 ax.set_xlabel('X-axis')
@@ -50,13 +55,10 @@ all_y = [point['before'][1]
          for point in points] + [point['after'][1] for point in points]
 all_z = [point['before'][2]
          for point in points] + [point['after'][2] for point in points]
+
 ax.set_xlim(min(all_x), max(all_x))
 ax.set_ylim(min(all_y), max(all_y))
 ax.set_zlim(min(all_z), max(all_z))
 
 # 显示图形
 plt.show()
-
-# 打印对应点的世界坐标的前后变化
-for point in points:
-    print("Before:", point['before'], "After:", point['after'])
