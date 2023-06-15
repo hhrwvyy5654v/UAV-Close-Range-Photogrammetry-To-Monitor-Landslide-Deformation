@@ -1,5 +1,5 @@
 '''
-Description: 获取aruco码的像素坐标
+Description: 获取aruco码的中心点的像素坐标
 FilePath: \GetArucoPixel.py
 Author: hhrwvyy5654v huang_rongquan@outlook.com
 Date: 2023-05-03 18:37:15

@@ -70,10 +70,6 @@ def main():
             initial_point1_cam = point1_cam.copy()
             initial_point2_cam = point2_cam.copy()
 
-            # 建筑发生沉降后，重复上述操作
-            # ...
-            # final_point1_cam, final2_cam = ...
-
             # 计算两组标记点的 ArUco 码的世界坐标的差
             delta_point1 = final_point1_cam - initial_point1_cam
             delta_point2 = final_point2_cam - initial_point2_cam

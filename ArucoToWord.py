@@ -1,5 +1,5 @@
 '''
-Description: 获取Aruco码中心点的像素坐标
+Description:生成指定要求的Aruco码图像并保存到word文档
 FilePath: \ArucoToWord.py
 Author: hhrwvyy5654v huang_rongquan@outlook.com
 Date: 2023-05-15 20:48:08
